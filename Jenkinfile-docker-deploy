@@ -84,6 +84,7 @@ steps {
 //def private_ip=cat private_ip | awk {'NR==2'} | tr -d {' '} | tr -d {'"'} |tr -d ','
 //sh 'ssh 'cat private_ip | awk {'NR==2'} | tr -d {' '} | tr -d {'"'} |tr -d ',' ''
 sh "ssh jenkins@18.191.89.66"
+sh "pwd"
 sh "docker pull ramachandraannadi/gameoflife-image:$BUILD_NUMBER"
 sh "docker rm -f gameoflife-web"
 sh "docker run -d --name gameoflife-web -p 8000:8080 ramachandraannadi/gameoflife-image:$BUILD_NUMBER"
