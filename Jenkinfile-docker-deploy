@@ -83,7 +83,9 @@ stage ('login to aws') {
 steps {
 //def private_ip=cat private_ip | awk {'NR==2'} | tr -d {' '} | tr -d {'"'} |tr -d ','
 //sh 'ssh 'cat private_ip | awk {'NR==2'} | tr -d {' '} | tr -d {'"'} |tr -d ',' ''
-sh "ssh jenkins@18.191.89.66"
+sh "cp /var/lib/jenkins/docker-deploy.sh ."
+sh "ls"
+sh "ssh jenkins@18.191.89.66 'bash -s' < docker-deploy.sh $BUILD_NUMBER"
 sh "pwd"
 sh "docker pull ramachandraannadi/gameoflife-image:$BUILD_NUMBER"
 sh "docker rm -f gameoflife-web"
