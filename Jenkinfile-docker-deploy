@@ -82,7 +82,7 @@ sh "terraform output > private_ip"
 stage ('login to aws') {
 steps {
 script { 
-  private_ip=cat private_ip | awk {'NR==2'} | tr -d {' '} | tr -d {'"'} |tr -d ','
+  private_ip=${cat private_ip | awk {'NR==2'} | tr -d {' '} | tr -d {'"'} |tr -d ','}
   //private_ip="172.31.12.235"
   }
   
