@@ -61,6 +61,8 @@
     </style>
 </head>
 <body>
+    <h2>Welcome to Qentelli Build pipeline! develop</h2>
+    
 <div class="intro">
     <p>This is a really cool web version of Conway's famous Game Of
         Life. The Game of Life is a cellular automaton devised by the British
