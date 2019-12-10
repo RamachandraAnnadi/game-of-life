@@ -95,7 +95,7 @@ script {
 sh "cp /var/lib/jenkins/docker-deploy.sh ."
 sh "ls"
 //sh "ssh jenkins@'cat private_ip | awk {'NR==2'} | tr -d {' '} | tr -d {'"'} |tr -d ',' 'bash -s' < docker-deploy.sh $BUILD_NUMBER"
-sh "ssh jenkins@'${private_ip}' 'bash -s'  < docker-deploy.sh $BUILD_NUMBER"
+sh "ssh jenkins@172.31.12.235 'bash -s'  < docker-deploy.sh $BUILD_NUMBER"
 //sh "docker-deploy.sh $BUILD_NUMBER"
 //sh "pwd"
 //sh "docker pull ramachandraannadi/gameoflife-image:$BUILD_NUMBER"
