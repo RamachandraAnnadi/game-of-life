@@ -68,6 +68,7 @@
 	<h2>Welcome to Qentelli, this is DEV!</h2>
 	
 	<div class="intro">
+		<h2>Welcome to Qentelli, this is DEV!</h2>
 	    <p>This is a really cool web version of Conway's famous Game Of
 	        Life. The Game of Life is a cellular automaton devised by the British
 	        mathematician John Horton Conway way back in 1970.</p>
