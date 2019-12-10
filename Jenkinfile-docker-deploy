@@ -1,6 +1,7 @@
+
+ def private_ip = ''
  pipeline {
  
- def private_ip= ""
    agent {
                         label "master"
                                        }
