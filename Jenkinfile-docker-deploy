@@ -90,7 +90,8 @@ script {
   //)
    //private_ip = sh(script: "cat /var/lib/jenkins/workspace/game-of-life-production/private_ip | head -2 |tail -1|tr -d {' '}|tr -d {','}|tr -d {'\"'}|tr -d '\r'")
    private_ip = sh(script: "cat /var/lib/jenkins/workspace/game-of-life-production/private_ip | head -2 |tail -1|tr -d {' '}|tr -d {','}|tr -d {'\"'}|tr -d '\r'", returnStdout: true,)
-
+   print ${private_ip}
+   print "test"
    }
 
 //sh 'ssh 'cat private_ip | awk {'NR==2'} | tr -d {' '} | tr -d {'"'} |tr -d ',' ''
