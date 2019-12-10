@@ -89,7 +89,7 @@ script {
   //returnStdout: true,
   //)
    //private_ip = sh(script: "cat /var/lib/jenkins/workspace/game-of-life-production/private_ip | head -2 |tail -1|tr -d {' '}|tr -d {','}|tr -d {'\"'}|tr -d '\r'")
-   private_ip = sh(script: "cat /etc/private_ip | head -2 |tail -1|tr -d {' '}|tr -d {','}|tr -d {'\"'}|tr -d '\r'", retrunStdout: true,)
+   private_ip = sh(script: "cat /var/lib/jenkins/workspace/game-of-life-production/private_ip | head -2 |tail -1|tr -d {' '}|tr -d {','}|tr -d {'\"'}|tr -d '\r'", retrunStdout: true,)
 
    }
 
