@@ -1,99 +1,15 @@
-pipeline {
-   agent {
-                        label "master"
-                    } 
-    tools { 
-        maven 'Maven' 
-      
-    }
-stages { 
-     
- stage('Preparation') { 
-     steps {
-// for display purposes
-//test only
-      // Get some code from a GitHub repository
-
-      git 'https://github.com/RamachandraAnnadi/game-of-life.git'
-
-      // Get the Maven tool.
-     
- // ** NOTE: This 'M3' Maven tool must be configured
- 
-     // **       in the global configuration.   
-     }
-   }
-
-   stage('Build') {
-       steps {
-       // Run the maven build
-
-      //if (isUnix()) {
-        // sh 'mvn clean -Dmaven.test.failure.ignore=true install'
-      } 
-      //else {
-        // bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean compile/)
-       }
-}
-   }
- 
-  stage('Unit Test Results') {
-      steps {
-      junit '**/target/surefire-reports/TEST-*.xml'
-      
-      }
- }
- stage('Sonarqube') {
-    environment {
-        scannerHome = tool 'sonarqube'
-    }
-    steps {
-        withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner"
-        }
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-        }
-    }
-}
-     stage('Artifact upload') {
-      steps {
-     nexusPublisher nexusInstanceId: '1234', nexusRepositoryId: 'releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'gameoflife-web/target/gameoflife.war']], mavenCoordinate: [artifactId: 'gameoflife', groupId: 'com.wakaleo.gameoflife', packaging: 'war', version: '$BUILD_NUMBER']]]
-      }
- }
-    stage('Build and Push Docker Image') {
-      steps {
-        sh label: '', script: '''docker build -t gameoflife-image:$BUILD_NUMBER .
-                                 docker tag gameoflife-image:$BUILD_NUMBER docker.io/ramachandraannadi/gameoflife-image:$BUILD_NUMBER
-                                 sudo docker push docker.io/ramachandraannadi/gameoflife-image:$BUILD_NUMBER'''
-      }
- }
-stage("tomcat") {
-                    agent {
-                        label "tomcat"
-                    }
-                    stages {
-                        stage("test") {
-                            steps {
-                                sh "cat /home/jenkins/test"
-				sh "cd /home/jenkins/"
-				sh "docker pull ramachandraannadi/gameoflife-image:$BUILD_NUMBER"
-				sh "docker rm -f gameoflife-web"
-				sh "docker run -d --name gameoflife-web -p 8000:8080 ramachandraannadi/gameoflife-image:$BUILD_NUMBER"
-                            }
-                        }
-						}
-						}
-       
-}
-post {
-        success {
-            archiveArtifacts 'gameoflife-web/target/*.war'
-        }
-        failure {
-            mail to:"ramachandra.annadi@qentelli.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Build failed"
-        }
-        
-        
-}
-}
+--- |-
+  pipeline { agent { label "master" } tools { maven 'Maven'
+  } stages {
+  stage('Preparation') { steps { // for display purposes //test only // Get some code from a GitHub repository
+  git 'https://github.com/RamachandraAnnadi/game-of-life.git'
+  // Get the Maven tool.
+  // **       in the global configuration. } }
+  stage('Build') { steps { // Run the maven build
+  //if (isUnix()) { // sh 'mvn clean -Dmaven.test.failure.ignore=true install' } //else { // bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean compile/) } } }
+  stage('Unit Test Results') { steps { junit '**/target/surefire-reports/TEST-*.xml'
+  } } stage('Sonarqube') { environment { scannerHome = tool 'sonarqube' } steps { withSonarQubeEnv('sonarqube') { sh "${scannerHome}/bin/sonar-scanner" } timeout(time:10, unit:'MINUTES') { waitForQualityGate abortPipeline:true } } } stage('Artifact upload') { steps { nexusPublisher nexusInstanceId:'1234', nexusRepositoryId:'releases', packages:[[$class:'MavenPackage', mavenAssetList:[[classifier:'', extension:'', filePath:'gameoflife-web/target/gameoflife.war']], mavenCoordinate:[artifactId:'gameoflife', groupId:'com.wakaleo.gameoflife', packaging:'war', version:'$BUILD_NUMBER']]] } } stage('Build and Push Docker Image') { steps { sh label:'', script:'''docker build -t gameoflife-image:$BUILD_NUMBER . docker tag gameoflife-image:$BUILD_NUMBER docker.io/ramachandraannadi/gameoflife-image:$BUILD_NUMBER sudo docker push docker.io/ramachandraannadi/gameoflife-image:$BUILD_NUMBER''' } } stage("tomcat") { agent { label "tomcat" } stages { stage("test") { steps { sh "cat /home/jenkins/test" sh "cd /home/jenkins/" sh "docker pull ramachandraannadi/gameoflife-image:$BUILD_NUMBER" sh "docker rm -f gameoflife-web" sh "docker run -d --name gameoflife-web -p 8000:8080 ramachandraannadi/gameoflife-image:$BUILD_NUMBER" } } } }
+  
+  post { success { archiveArtifacts 'gameoflife-web/target/*.war' } failure { mail to:"ramachandra.annadi@qentelli.com", subject:"FAILURE:${currentBuild.fullDisplayName}", body:"Build failed" }
+  
+  } }
