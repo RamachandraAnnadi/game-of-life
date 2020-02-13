@@ -28,11 +28,11 @@ stages {
        steps {
        // Run the maven build
 
-      if (isUnix()) {
-         sh 'mvn clean -Dmaven.test.failure.ignore=true install'
+      //if (isUnix()) {
+        // sh 'mvn clean -Dmaven.test.failure.ignore=true install'
       } 
-      else {
-         bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean compile/)
+      //else {
+        // bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean compile/)
        }
 }
    }
